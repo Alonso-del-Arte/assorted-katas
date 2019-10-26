@@ -1,22 +1,40 @@
 package katae.fractions;
 
+/**
+ * Represent fractions symbolically rather than numerically.
+ * TODO: Get this to pass all the tests, or at least most of the tests.
+ * @author Alonso del Arte, unless indicated otherwise.
+ */
 public class Fraction implements Comparable<Fraction> {
 
     private final long fractNumer;
     private final long fractDenom;
 
-    // STUB TO FAIL FIRST TEST
     public long getNumerator() {
-        return 0L;
+        return this.fractNumer;
     }
 
-    // STUB TO FAIL FIRST TEST
     public long getDenominator() {
-        return 0L;
+        return this.fractDenom;
     }
 
-    // STUB TO FAIL FIRST TEST
-    public Fraction plus(Fraction summand) {
+    /**
+     * Provides numerators and a denominator for cross-multiplied fractions.
+     * @param operand1 The first fraction to cross-multiply
+     * @param operand2 The second fraction to cross multiply
+     * @return Two cross-multiplied numerators and a denominator as an array of
+     * long.
+     * @author Kunle Oshiyoye and Chris Delduco, October 16, 2019, at Java TDD
+     * Crash Course.
+     */
+    private long[] crossMultiply(Fraction operand1, Fraction operand2) {
+        long newDenom = operand1.fractDenom * operand2.fractDenom;
+        long newCurrentNumer = operand1.fractNumer * operand2.fractDenom;
+        long newOperandNumer = operand2.fractNumer * operand1.fractDenom;
+        return new long[]{newCurrentNumer, newOperandNumer, newDenom};
+    }
+
+    public Fraction plus(Fraction addend) {
         return new Fraction(0);
     }
 
@@ -25,9 +43,8 @@ public class Fraction implements Comparable<Fraction> {
         return new Fraction(0);
     }
 
-    // STUB TO FAIL FIRST TEST
     public Fraction negate() {
-        return new Fraction(0);
+        return this;
     }
 
     // STUB TO FAIL FIRST TEST
@@ -65,7 +82,7 @@ public class Fraction implements Comparable<Fraction> {
         return new Fraction(0);
     }
 
-    // STUB TO FAIL FIRST TEST
+    // STUB TO FAIL TEST
     public double getNumericApproximation() {
         return 0.0;
     }
@@ -126,8 +143,7 @@ public class Fraction implements Comparable<Fraction> {
         if (this.fractDenom == 1) {
             return Long.toString(this.fractNumer);
         } else {
-            return (this.fractNumer + " \\ " + this.fractDenom);
-            // CHANGE BACKSLASH TO FORWARD SLASH TO PASS TEST
+            return (this.fractNumer + "/" + this.fractDenom);
         }
     }
 
@@ -149,13 +165,12 @@ public class Fraction implements Comparable<Fraction> {
     // STUB TO FAIL FIRST TEST
     @Override
     public int compareTo(Fraction other) {
-        return 0;
+        return -1;
     }
 
-    // AUXILIARY CONSTRUCTOR STUB
     public Fraction(long numerator) {
         this.fractNumer = numerator;
-        this.fractDenom = 0;
+        this.fractDenom = 1;
     }
 
     // PRIMARY CONSTRUCTOR STUB

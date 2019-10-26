@@ -22,6 +22,7 @@ import swingaux.fileops.FileChooserWithOverwriteGuard;
 import swingaux.fileops.PNGFileFilter;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.Event;
 import java.awt.Graphics2D;
 import java.awt.datatransfer.StringSelection;
@@ -31,6 +32,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -49,7 +52,9 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 /**
- *
+ * A program to display charts of Egyptian fractions for fractions in the unit
+ * interval. Can use either the greedy algorithm or the divisors of denominator
+ * algorithm.
  * @author Alonso del Arte
  */
 public final class EgyptianFractionViewer extends JFrame implements ActionListener {
@@ -255,9 +260,32 @@ public final class EgyptianFractionViewer extends JFrame implements ActionListen
         this.getToolkit().getSystemClipboard().setContents(imgSel, imgSel);
     }
 
+    /**
+     * Uses the default Web browser to show the user manual for this program. If
+     * the URL has bad syntax or the default Web browser can't be accessed, an
+     * error message will be displayed. However, if there is no Internet
+     * connection, how to handle that is up to the default Web browser.
+     */
     public void showUserManual() {
-        // TODO: Connect user manual
-        System.out.println("Manual not available yet, sorry...");
+        String urlStr = "https://github.com/Alonso-del-Arte/assorted-katas/blob/master/docs/EgyptianFractionsViewerUserManual.md";
+        try {
+            URI url = new URI(urlStr);
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(url);
+            } else {
+                String noDesktopMessage = "Sorry, unable to open URL\n<" + urlStr + ">\nDefault Web browser is not available from this program.";
+                JOptionPane.showMessageDialog(this, noDesktopMessage);
+                System.err.println(noDesktopMessage);
+            }
+        } catch (URISyntaxException urise) {
+            System.err.println("Unable to open URL " + urlStr);
+            System.err.println("\"" + urise.getMessage() + "\"");
+        } catch (IOException ioe) {
+            String problemMessage = "Sorry, unable to open URL\n<" + urlStr + ">\n\"" + ioe.getMessage() + "\"";
+            JOptionPane.showMessageDialog(this, problemMessage);
+            System.err.println(problemMessage);
+        }
     }
 
     public void showAboutBox() {
